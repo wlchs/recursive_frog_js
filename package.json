@@ -1,0 +1,13 @@
+{
+  "name": "frog_game",
+  "version": "1.0.0",
+  "description": "Small recursive coding challenge",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "keywords": [
+    "recursion"
+  ],
+  "author": "wlchs",
+  "license": "ISC"
+}
