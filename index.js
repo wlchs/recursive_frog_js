@@ -59,18 +59,19 @@ function recursiveSteps(state) {
     ];
 }
 
-function printTree_(node, path, leafPaths) {
+function printTree_(node, path) {
     const path_ = [...path, node[0]];
     if (node[1].length === 0) {
-        leafPaths.push(path_);
+        return [path_];
     }
-    node[1].map(n => printTree_(n, path_, leafPaths));
+    return node[1]
+        .map(n => printTree_(n, path_))
+        .flat(1);
 }
 
 function printTree(node) {
-    const leafPaths = [];
-    printTree_(node, [], leafPaths);
-    return leafPaths.filter(p => arraysEqual(p[p.length - 1], finalState));
+    return printTree_(node, [])
+        .filter(p => arraysEqual(p[p.length - 1], finalState));
 }
 
 const solutionTree = recursiveSteps(initialState);
