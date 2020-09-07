@@ -26,25 +26,25 @@ function switchPositions(state, i, j) {
 
 function nextSteps(state) {
     const result = [];
-
+    
     for (let i = 0; i < state.length; ++i) {
         switch (state[i]) {
             case "g": {
-                          if (i + 1 < state.length && state[i + 1] === " ") {
-                              result.push(switchPositions(state, i, i + 1));
-                          } else if (i + 2 < state.length && state[i + 2] === " ") {
-                              result.push(switchPositions(state, i, i + 2));
-                          }
-                          break;
-                      }
+                if (i + 1 < state.length && state[i + 1] === " ") {
+                    result.push(switchPositions(state, i, i + 1));
+                } else if (i + 2 < state.length && state[i + 2] === " ") {
+                    result.push(switchPositions(state, i, i + 2));
+                }
+                break;
+            }
             case "r": {
-                          if (i - 1 >= 0 && state[i - 1] === " ") {
-                              result.push(switchPositions(state, i, i - 1));
-                          } else if (i - 2 >= 0 && state[i - 2] === " ") {
-                              result.push(switchPositions(state, i, i - 2));
-                          }
-                          break;
-                      }
+                if (i - 1 >= 0 && state[i - 1] === " ") {
+                    result.push(switchPositions(state, i, i - 1));
+                } else if (i - 2 >= 0 && state[i - 2] === " ") {
+                    result.push(switchPositions(state, i, i - 2));
+                }
+                break;
+            }
             default: break;
         }
     }
@@ -64,14 +64,11 @@ function printTree_(node, path) {
     if (node[1].length === 0) {
         return [path_];
     }
-    return node[1]
-        .map(n => printTree_(n, path_))
-        .flat(1);
+    return node[1].map(n => printTree_(n, path_)).flat(1);
 }
 
 function printTree(node) {
-    return printTree_(node, [])
-        .filter(p => arraysEqual(p[p.length - 1], finalState));
+    return printTree_(node, []).filter(p => arraysEqual(p[p.length - 1], finalState));
 }
 
 const solutionTree = recursiveSteps(initialState);
