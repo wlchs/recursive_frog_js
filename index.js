@@ -53,31 +53,32 @@ function nextSteps(state) {
 } 
 
 function recursiveSteps(state) {
-    if (arraysEqual(state, finalState)) {
-        return [state];
-    }
-
-    const steps = nextSteps(state);
-    if (steps.length === 0) {
-        return false;
-    }
-
-    const rec = steps.map(recursiveSteps).filter(r => r !== false);
-    if (rec.length === 0) {
-        return false;
-    }
-
-    return [state, rec];
+    return [
+        state,
+        nextSteps(state).map(recursiveSteps)
+    ];
 }
 
-function printTree(node, path) {
-    const fullPath = [...path, node[0]];
-    if (arraysEqual(node[0], finalState)) {
-        console.log(fullPath.map(JSON.stringify));
-        return;
+function printTree_(node, path, leafPaths) {
+    const path_ = [...path, node[0]];
+    if (node[1].length === 0) {
+        leafPaths.push(path_);
     }
-    node[1].forEach(n => printTree(n, fullPath));
+    node[1].map(n => printTree_(n, path_, leafPaths));
+}
+
+function printTree(node) {
+    const leafPaths = [];
+    printTree_(node, [], leafPaths);
+    return leafPaths.filter(p => arraysEqual(p[p.length - 1], finalState));
 }
 
 const solutionTree = recursiveSteps(initialState);
-printTree(solutionTree, []);
+const leafPaths = printTree(solutionTree);
+
+for (const solution of leafPaths) {
+    for (const node of solution) {
+        console.log(JSON.stringify(node));
+    }
+    console.log();
+}
