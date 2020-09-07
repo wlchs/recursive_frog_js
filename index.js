@@ -80,5 +80,4 @@ function printTree(node, path) {
 }
 
 const solutionTree = recursiveSteps(initialState);
-console.log(JSON.stringify(solutionTree));
 printTree(solutionTree, []);
