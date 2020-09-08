@@ -12,11 +12,9 @@ function last(array) {
     return array[array.length - 1];
 }
 
-function switchPositions(state, i, j) {
-    const result = [...state];
-    result[i] = state[j];
-    result[j] = state[i];
-    return result;
+function switchPositions(arr, i, j) {
+    const [a, b] = i < j ? [i, j] : [j, i];
+    return [...arr.slice(0,a), arr[b], ...arr.slice(a + 1, b), arr[a], ...arr.slice(b + 1)];
 }
 
 function nextSteps(state) {
@@ -48,10 +46,7 @@ function nextSteps(state) {
 } 
 
 function recursiveSteps(state) {
-    return [
-        state,
-        nextSteps(state).map(recursiveSteps)
-    ];
+    return [state, nextSteps(state).map(recursiveSteps)];
 }
 
 function printTree_(node, path) {
