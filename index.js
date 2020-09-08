@@ -1,15 +1,11 @@
 const initialState = ["g","g","g"," ","r","r","r"];
 const finalState = [...initialState].reverse();
 
-function arraysEqual(a, b) {
-    if (a === b) return true;
-    if (a == null || b == null) return false;
-    if (a.length !== b.length) return false;
-
-    for (var i = 0; i < a.length; ++i) {
-      if (a[i] !== b[i]) return false;
-    }
-    return true;
+function equals(a, b) {
+    if (a.length === 0 && b.length === 0) return true;
+    if (a.length === 0) return false;
+    if (b.length === 0) return false;
+    return a[0] === b[0] ? equals(a.slice(1), b.slice(1)) : false;
 }
 
 function last(array) {
@@ -67,7 +63,7 @@ function printTree_(node, path) {
 }
 
 function printTree(node) {
-    return printTree_(node, []).filter(p => arraysEqual(last(p), finalState));
+    return printTree_(node, []).filter(p => equals(last(p), finalState));
 }
 
 const solutionTree = recursiveSteps(initialState);
