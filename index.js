@@ -53,14 +53,6 @@ function recursiveSteps(state) {
     };
 }
 
-function printTree_(node, path) {
-    const path_ = [...path, node.root];
-    if (node.leaves.length === 0) {
-        return [path_];
-    }
-    return node.leaves.map(n => printTree_(n, path_)).flat(1);
-}
-
 function print(node) {
     if (node.leaves.length === 0) {
         return [[node.root]];
