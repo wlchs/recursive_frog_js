@@ -13,40 +13,21 @@ function switchPositions(arr, i, j) {
     return [...arr.slice(0, a), arr[b], ...arr.slice(a + 1, b), arr[a], ...arr.slice(b + 1)];
 }
 
-function nextSteps(state) {
-    const result = [];
-
-    for (let i = 0; i < state.length; ++i) {
-        switch (state[i]) {
-            case "g": {
-                if (i + 1 < state.length && state[i + 1] === " ") {
-                    result.push(switchPositions(state, i, i + 1));
-                } else if (i + 2 < state.length && state[i + 2] === " ") {
-                    result.push(switchPositions(state, i, i + 2));
-                }
-                break;
-            }
-            case "r": {
-                if (i - 1 >= 0 && state[i - 1] === " ") {
-                    result.push(switchPositions(state, i, i - 1));
-                } else if (i - 2 >= 0 && state[i - 2] === " ") {
-                    result.push(switchPositions(state, i, i - 2));
-                }
-                break;
-            }
-            default:
-                break;
-        }
+function steps(state) {
+    if (state.length === 0) {
+        return [];
     }
-
-    return result;
+    const empty = state.indexOf(" ");
+    return [-2, -1, 1, 2]
+        .map(d => [d, Math.sign(d) > 0 ? "r" : "g"])
+        .map(([d, e]) => state[d + empty] === e ? switchPositions(state, empty, d + empty) : [])
 }
 
 function recursivePrint(state) {
     if (equals(state, finalState)) {
         return [[state]];
     }
-    return nextSteps(state).map(recursivePrint).flat(1).map(n => [state, ...n]);
+    return steps(state).map(recursivePrint).flat(1).map(n => [state, ...n]);
 }
 
 recursivePrint(initialState).forEach((solution, id) => {
