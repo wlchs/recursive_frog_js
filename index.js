@@ -8,10 +8,6 @@ function equals(a, b) {
     return a[0] === b[0] ? equals(a.slice(1), b.slice(1)) : false;
 }
 
-function last(array) {
-    return array[array.length - 1];
-}
-
 function switchPositions(arr, i, j) {
     const [a, b] = i < j ? [i, j] : [j, i];
     return [...arr.slice(0, a), arr[b], ...arr.slice(a + 1, b), arr[a], ...arr.slice(b + 1)];
@@ -46,30 +42,14 @@ function nextSteps(state) {
     return result;
 }
 
-function recursiveSteps(state) {
-    return {
-        root: state,
-        leaves: nextSteps(state).map(recursiveSteps)
-    };
-}
-
-function print(node) {
-    if (node.leaves.length === 0) {
-        return [[node.root]];
+function recursivePrint(state) {
+    if (equals(state, finalState)) {
+        return [[state]];
     }
-    return node.leaves.map(print).flat(1).map(n => [node.root, ...n]);
+    return nextSteps(state).map(recursivePrint).flat(1).map(n => [state, ...n]);
 }
 
-function printTree(node) {
-    return print(node).filter(p => equals(last(p), finalState));
-}
-
-const solutionTree = recursiveSteps(initialState);
-const leafPaths = printTree(solutionTree);
-
-for (const solution of leafPaths) {
-    for (const node of solution) {
-        console.log(JSON.stringify(node));
-    }
-    console.log();
-}
+recursivePrint(initialState).forEach((solution, id) => {
+    console.log("Solution: ", id + 1);
+    solution.forEach(n => console.log(JSON.stringify(n)));
+});
