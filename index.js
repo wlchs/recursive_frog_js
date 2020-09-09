@@ -1,4 +1,4 @@
-const initialState = ["g","g","g"," ","r","r","r"];
+const initialState = ["g", "g", "g", " ", "r", "r", "r"];
 const finalState = [...initialState].reverse();
 
 function equals(a, b) {
@@ -14,12 +14,12 @@ function last(array) {
 
 function switchPositions(arr, i, j) {
     const [a, b] = i < j ? [i, j] : [j, i];
-    return [...arr.slice(0,a), arr[b], ...arr.slice(a + 1, b), arr[a], ...arr.slice(b + 1)];
+    return [...arr.slice(0, a), arr[b], ...arr.slice(a + 1, b), arr[a], ...arr.slice(b + 1)];
 }
 
 function nextSteps(state) {
     const result = [];
-    
+
     for (let i = 0; i < state.length; ++i) {
         switch (state[i]) {
             case "g": {
@@ -38,27 +38,38 @@ function nextSteps(state) {
                 }
                 break;
             }
-            default: break;
+            default:
+                break;
         }
     }
 
     return result;
-} 
+}
 
 function recursiveSteps(state) {
-    return [state, nextSteps(state).map(recursiveSteps)];
+    return {
+        root: state,
+        leaves: nextSteps(state).map(recursiveSteps)
+    };
 }
 
 function printTree_(node, path) {
-    const path_ = [...path, node[0]];
-    if (node[1].length === 0) {
+    const path_ = [...path, node.root];
+    if (node.leaves.length === 0) {
         return [path_];
     }
-    return node[1].map(n => printTree_(n, path_)).flat(1);
+    return node.leaves.map(n => printTree_(n, path_)).flat(1);
+}
+
+function print(node) {
+    if (node.leaves.length === 0) {
+        return [[node.root]];
+    }
+    return node.leaves.map(print).flat(1).map(n => [node.root, ...n]);
 }
 
 function printTree(node) {
-    return printTree_(node, []).filter(p => equals(last(p), finalState));
+    return print(node).filter(p => equals(last(p), finalState));
 }
 
 const solutionTree = recursiveSteps(initialState);
