@@ -14,15 +14,13 @@ function switchPositions(arr, i, j) {
 }
 
 function recursiveSteps(state) {
-    if (state.length === 0) {
-        return [];
-    }
     if (equals(state, finalState)) {
         return [[state]];
     }
     const empty = state.indexOf(" ");
     return [-2, -1, 1, 2]
         .map(d => state[d + empty] === (d > 0 ? "r" : "g") ? switchPositions(state, empty, d + empty) : [])
+        .filter(s => s.length !== 0)
         .map(recursiveSteps)
         .flat(1)
         .map(n => [state, ...n]);
