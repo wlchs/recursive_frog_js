@@ -13,24 +13,22 @@ function switchPositions(arr, i, j) {
     return [...arr.slice(0, a), arr[b], ...arr.slice(a + 1, b), arr[a], ...arr.slice(b + 1)];
 }
 
-function steps(state) {
+function recursiveSteps(state) {
     if (state.length === 0) {
         return [];
     }
-    const empty = state.indexOf(" ");
-    return [-2, -1, 1, 2]
-        .map(d => [d, Math.sign(d) > 0 ? "r" : "g"])
-        .map(([d, e]) => state[d + empty] === e ? switchPositions(state, empty, d + empty) : [])
-}
-
-function recursivePrint(state) {
     if (equals(state, finalState)) {
         return [[state]];
     }
-    return steps(state).map(recursivePrint).flat(1).map(n => [state, ...n]);
+    const empty = state.indexOf(" ");
+    return [-2, -1, 1, 2]
+        .map(d => state[d + empty] === (d > 0 ? "r" : "g") ? switchPositions(state, empty, d + empty) : [])
+        .map(recursiveSteps)
+        .flat(1)
+        .map(n => [state, ...n]);
 }
 
-recursivePrint(initialState).forEach((solution, id) => {
+recursiveSteps(initialState).forEach((solution, id) => {
     console.log("Solution: ", id + 1);
     solution.forEach(n => console.log(JSON.stringify(n)));
 });
