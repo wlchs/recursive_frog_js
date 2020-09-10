@@ -3,8 +3,9 @@
   "version": "1.0.0",
   "description": "Small recursive coding challenge",
   "scripts": {
-    "start": "node index.js"
+    "start": "node src/index.mjs"
   },
+  "type": "module",
   "keywords": [
     "recursion"
   ],
